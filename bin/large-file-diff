@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+const yargs = require('yargs');
+const LargeFileDiff = require('../index.js');
+
+const argv = yargs
+  .usage('$0 file1 file2')
+  .help('help').alias('help', 'h').describe('h', 'Show help.')
+  .epilog('Home page and docs: https://github.com/niiknow/large-file-diff')
+  .demand(2)
+  .argv;
+
+const file1 = argv._[0];
+const file2 = argv._[1];
+
+const lfd = new LargeFileDiff({
+  skipHeader: argv.skipHeader
+});
+
+lfd.on('+', line => {
+  console.log('+' + line);
+});
+
+lfd.on('-', line => {
+  console.log('-' + line);
+});
+lfd.diff(file1, file2);

@@ -1,0 +1,56 @@
+{
+  "name": "large-file-diff",
+  "version": "1.0.0",
+  "description": "line by line diff of two large files",
+  "license": "MIT",
+  "repository": "niiknow/large-file-diff",
+  "author": {
+    "name": "noogen",
+    "email": "friends@niiknow.org",
+    "url": "niiknow.org"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "test": "xo && nyc ava",
+    "report": "nyc report --reporter=html"
+  },
+  "bin": {
+    "large-file-diff": "./bin/large-file-diff"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    ""
+  ],
+  "dependencies": {
+    "n-readlines": "^0.2.8",
+    "yargs": "^9.0.1"
+  },
+  "devDependencies": {
+    "ava": "^0.20.0",
+    "nyc": "^11.0.0",
+    "xo": "^0.18.2"
+  },
+  "xo": {
+    "semicolon": true,
+    "prefer-const": false,
+    "space": 2,
+    "rules": {
+      "object-shorthand": [
+        0,
+        "consistent"
+      ],
+      "capitalized-comments": [
+        "error",
+        "never"
+      ],
+      "ava/prefer-async-await": 0
+    }
+  },
+  "ava": {
+    "failWithoutAssertions": true
+  }
+}
