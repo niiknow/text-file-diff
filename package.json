@@ -1,6 +1,6 @@
 {
   "name": "text-file-diff",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "line by line diff of two large files",
   "license": "MIT",
   "repository": "niiknow/text-file-diff",

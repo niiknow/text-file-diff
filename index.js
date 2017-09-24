@@ -15,8 +15,8 @@ function defaultLineComparer(line1, line2) {
 
 /**
  * custom line reader for better control of file
- * @param  {[type]} file [description]
- * @return {[type]}      [description]
+ * @param  String file path of file
+ * @return Object      custom linereader
  */
 function myLineReader(file) {
   const rst = new ReadlinesSync(file);
@@ -40,10 +40,6 @@ function myLineReader(file) {
 
 /**
  * line by line diff of two files
- * 1.  foreach line of file1, compare each line of file2
- *  equal: incr both files to next line
- *  line1 > line2: must be new line in file2, inc file2 to next line
- *  line1 < line2: must be deleted line, inc file1 to next line
  */
 class FileDiffLine extends EventEmitter {
   /**
@@ -66,6 +62,7 @@ class FileDiffLine extends EventEmitter {
     const lineReader1 = myLineReader(file1);
     const lineReader2 = myLineReader(file2);
     const compareFn = this.compareFn || defaultLineComparer;
+    const charset = this.charset || 'utf8';
 
     if (this.skipHeader) {
       lineReader1.moveNext();
@@ -75,8 +72,8 @@ class FileDiffLine extends EventEmitter {
     // while both files has valid val
     while (lineReader1.val || lineReader2.val) {
       // foreach line of file1, compare each line of file2
-      const line1 = lineReader1.val.toString('utf8');
-      const line2 = lineReader2.val.toString('utf8');
+      const line1 = lineReader1.val.toString(charset);
+      const line2 = lineReader2.val.toString(charset);
       const cmp = compareFn(line1, line2);
 
       // emit on compared

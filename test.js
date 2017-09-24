@@ -1,7 +1,7 @@
 import test from 'ava';
 import TextFileDiff from '.';
 
-test('test with headers', t => {
+test('test with header', t => {
   const m = new TextFileDiff();
   const expected = '+Additional\n+Another\n+Lines\n-Some\n-Simple\n+With\n';
 

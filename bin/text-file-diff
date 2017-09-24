@@ -18,10 +18,10 @@ const lfd = new LargeFileDiff({
 });
 
 lfd.on('+', line => {
-  console.log('+' + line);
+  console.log('+|' + line);
 });
 
 lfd.on('-', line => {
-  console.log('-' + line);
+  console.log('-|' + line);
 });
 lfd.diff(file1, file2);
