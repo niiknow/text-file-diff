@@ -2,7 +2,7 @@
 # text-file-diff
 > line by line diff of two large text files
 
-You need a nodejs tool to diff two large text files.  This could also useful with csv files:
+You need a nodejs tool to diff two large text files.  This is also useful with csv files:
 - compare products file for changes to import
 - compare log files 
 - compare database of employee/users 
@@ -33,7 +33,7 @@ $ npm install text-file-diff
   m.diff('tests/file1.txt', 'tests/file2.txt');
 ```
 
-## Preview
+## Example
 ```bash
 ./bin/text-file-diff tests/file1.txt tests/file2.txt | sed 's/^\(.\{1\}\)/\1|/'
 ```
