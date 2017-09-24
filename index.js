@@ -79,6 +79,9 @@ class FileDiffLine extends EventEmitter {
       const line2 = lineReader2.val.toString('utf8');
       const cmp = compareFn(line1, line2);
 
+      // emit on compared
+      this.emit('compared', line1, line2, cmp, lineReader1, lineReader2);
+
       // equals: so both inc both lines position
       if (cmp === 0) {
         lineReader1.moveNext();
