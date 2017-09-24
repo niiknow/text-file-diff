@@ -13,12 +13,12 @@ This script expect input of two `sorted` text files.  If the file is not sorted,
 
 ## Install
 
-```
+```bash
 $ npm install text-file-diff
 ```
 
 ## Usage
-```
+```js
   import TextFileDiff from 'text-file-diff';
 
   m.on('-', line => {
@@ -35,14 +35,14 @@ $ npm install text-file-diff
 
 ## Example
 ```bash
-./bin/text-file-diff tests/file1.txt tests/file2.txt | sed 's/^\(.\{1\}\)/\1|/'
+$ ./bin/text-file-diff tests/file1.txt tests/file2.txt | sed 's/^\(.\{1\}\)/\1|/'
 ```
 
 ## Point of Interest
 
 * Alternate shell 'diff' command:
 ```bash
-diff -u f1.txt f2.txt | sed -n '1,2d;/^[-+|]/p' | sed 's/^\(.\{1\}\)/\1|/'
+$ diff -u f1.txt f2.txt | sed -n '1,2d;/^[-+|]/p' | sed 's/^\(.\{1\}\)/\1|/'
 ```
 
 * https://github.com/paulfitz/daff - multi languages diff framework
