@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/niiknow/text-file-diff.svg?branch=master)](https://travis-ci.org/niiknow/text-file-diff)
 # text-file-diff
 > line by line diff of two large text files
 
