@@ -11,13 +11,12 @@ This is especially useful with csv/tsv/psv files:
 
 This script expect input of two `sorted` text files.  If the files are not sorted, the unix `sort` command may be of help: https://en.wikipedia.org/wiki/Sort_(Unix)
 
-> ForEach line in File1, compare to line in File2
-> 
->   equal: incr both files to next line
->   
->   line1 > line2: new line detected, incr File2 to next line
->   
->   line1 < line2: deleted line, incr File1 to next line
+```
+ForEach line in File1, compare to line in File2 
+   equal: incr both files to next line
+   line1 > line2: new line detected, incr File2 to next line
+   line1 < line2: deleted line, incr File1 to next line
+```
 
 Since the list will be `sorted`, the performance of this script is expected to be approximately `O(|A| log |A| + |B| log |B|)`, where A is File1 and B is File2.
 
