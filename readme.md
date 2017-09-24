@@ -20,6 +20,7 @@ $ npm install text-file-diff
 ## Usage
 ```js
   import TextFileDiff from 'text-file-diff';
+  const m = new TextFileDiff();
 
   m.on('-', line => {
     // when a line is in file1 but not in file2

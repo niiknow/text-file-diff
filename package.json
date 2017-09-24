@@ -1,6 +1,6 @@
 {
   "name": "text-file-diff",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "line by line diff of two large files",
   "license": "MIT",
   "repository": "niiknow/text-file-diff",
@@ -19,9 +19,7 @@
   "bin": {
     "text-file-diff": "./bin/text-file-diff"
   },
-  "files": [
-    "index.js"
-  ],
+  "main": "index.js",
   "keywords": [
     "diff",
     "difference",
