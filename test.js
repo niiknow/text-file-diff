@@ -1,8 +1,8 @@
 import test from 'ava';
-import LargeFileDiff from '.';
+import TextFileDiff from '.';
 
 test('test with headers', t => {
-  const m = new LargeFileDiff();
+  const m = new TextFileDiff();
   const expected = '+Additional\n+Another\n+Lines\n-Some\n-Simple\n+With\n';
 
   let actual = '';
@@ -20,7 +20,7 @@ test('test with headers', t => {
 test('test skip header', t => {
   const expected = '+Another\n+File\n+Lines\n-Some\n-Simple\n+With\n';
 
-  const m = new LargeFileDiff({
+  const m = new TextFileDiff({
     skipHeader: true
   });
   let actual = '';

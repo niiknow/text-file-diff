@@ -6,7 +6,7 @@ const LargeFileDiff = require('../index.js');
 const argv = yargs
   .usage('$0 file1 file2')
   .help('help').alias('help', 'h').describe('h', 'Show help.')
-  .epilog('Home page and docs: https://github.com/niiknow/large-file-diff')
+  .epilog('Home page and docs: https://github.com/niiknow/text-file-diff')
   .demand(2)
   .argv;
 

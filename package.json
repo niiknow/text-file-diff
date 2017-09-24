@@ -1,9 +1,9 @@
 {
-  "name": "large-file-diff",
+  "name": "text-file-diff",
   "version": "1.0.0",
   "description": "line by line diff of two large files",
   "license": "MIT",
-  "repository": "niiknow/large-file-diff",
+  "repository": "niiknow/text-file-diff",
   "author": {
     "name": "noogen",
     "email": "friends@niiknow.org",
@@ -17,7 +17,7 @@
     "report": "nyc report --reporter=html"
   },
   "bin": {
-    "large-file-diff": "./bin/large-file-diff"
+    "text-file-diff": "./bin/text-file-diff"
   },
   "files": [
     "index.js"
