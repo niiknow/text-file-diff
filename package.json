@@ -23,7 +23,11 @@
     "index.js"
   ],
   "keywords": [
-    ""
+    "diff",
+    "difference",
+    "differences",
+    "compare",
+    "compare-files"
   ],
   "dependencies": {
     "n-readlines": "^0.2.8",
