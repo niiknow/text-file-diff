@@ -41,22 +41,23 @@ function myLineReader(file) {
 /**
  * line by line diff of two files
  */
-class FileDiffLine extends EventEmitter {
+class TextFileDiff extends EventEmitter {
   /**
    * initialize FileDiff
-   * @param  {[type]} options [description]
-   * @return {[type]}         [description]
+   * @param  Object options the options option
+   * @return Object         self
    */
   constructor(options) {
     super();
     Object.assign(this, options);
+    return this;
   }
 
   /**
    * run diff
    * @param  String file1 path to file 1
    * @param  String file2 path to file 2
-   * @return Object this
+   * @return Object         self
    */
   diff(file1, file2) {
     const lineReader1 = myLineReader(file1);
@@ -71,7 +72,7 @@ class FileDiffLine extends EventEmitter {
 
     // while both files has valid val
     while (lineReader1.val || lineReader2.val) {
-      // foreach line of file1, compare each line of file2
+      // ForEach line in File1, compare to line in File2 
       const line1 = lineReader1.val.toString(charset);
       const line2 = lineReader2.val.toString(charset);
       const cmp = compareFn(line1, line2);
@@ -79,25 +80,25 @@ class FileDiffLine extends EventEmitter {
       // emit on compared
       this.emit('compared', line1, line2, cmp, lineReader1, lineReader2);
 
-      // equals: so both inc both lines position
+      // equals: incr both files to next line
       if (cmp === 0) {
         lineReader1.moveNext();
         lineReader2.moveNext();
       } else if (cmp > 0) {
-        // line1 > line2: must be new line in file2
+        // line1 > line2: new line detected
         if (cmp === 1) {
           this.emit('+', line2, lineReader1, lineReader2);
         }
 
-        // inc file2 to next line
+        // incr File2 to next line
         lineReader2.moveNext();
       } else if (cmp < 0) {
-        // line1 < line2: must be new line in file2
+        // line1 < line2: deleted line
         if (cmp === -1) {
           this.emit('-', line1, lineReader1, lineReader2);
         }
 
-        // inc file1 to next line
+        // incr File1 to next line
         lineReader1.moveNext();
       }
     }
@@ -106,4 +107,4 @@ class FileDiffLine extends EventEmitter {
   }
 }
 
-module.exports = FileDiffLine;
+module.exports = TextFileDiff;
