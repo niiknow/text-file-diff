@@ -1,17 +1,16 @@
 #!/usr/bin/env node
-
-const yargs = require('yargs');
 const LargeFileDiff = require('../index.js');
 
-const argv = yargs
-  .usage('$0 file1 file2')
-  .help('help').alias('help', 'h').describe('h', 'Show help.')
-  .epilog('Home page and docs: https://github.com/niiknow/text-file-diff')
-  .demand(2)
-  .argv;
+const argv = process.argv;
 
-const file1 = argv._[0];
-const file2 = argv._[1];
+if (argv.length < 4) {
+  console.log('-: require two files as arguments');
+  console.log('usage: text-file-diff file1 file2\n');
+  process.exit(1);
+}
+
+const file1 = argv[2];
+const file2 = argv[3];
 
 const lfd = new LargeFileDiff({
   skipHeader: argv.skipHeader
