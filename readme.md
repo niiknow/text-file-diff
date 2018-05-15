@@ -8,7 +8,7 @@ This is especially useful with csv/tsv/psv files:
 - compare database export of large organization employee/users 
 
 ## NOTE
-The benefits of this script is that it allow you to have full control of your file diff.  It work great on large file because it does not require you to load the entire file into memory or string.
+The benefits of this script is that it allow user full control of their file diffs.  It work great on large file because it does not require you to load the entire file into memory or string.
 
 This script expect input of two `sorted` text files.  If the files are not sorted, the unix `sort` command may be of help: https://en.wikipedia.org/wiki/Sort_(Unix)
 
