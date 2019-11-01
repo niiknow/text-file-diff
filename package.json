@@ -1,6 +1,6 @@
 {
   "name": "text-file-diff",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "line by line diff of two large files",
   "license": "MIT",
   "repository": "niiknow/text-file-diff",
@@ -10,7 +10,7 @@
     "url": "niiknow.org"
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=10"
   },
   "scripts": {
     "test": "xo && nyc ava",
@@ -28,12 +28,12 @@
     "compare-files"
   ],
   "dependencies": {
-    "n-readlines": "^0.2.8"
+    "n-readlines": "^1.0.0"
   },
   "devDependencies": {
-    "ava": "^0.20.0",
-    "nyc": "^11.4.1",
-    "xo": "^0.18.2"
+    "ava": "^2.4.0",
+    "nyc": "^14.1.1",
+    "xo": "^0.25.3"
   },
   "xo": {
     "semicolon": true,
