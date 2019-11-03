@@ -1,6 +1,6 @@
 {
   "name": "text-file-diff",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "line by line diff of two large files",
   "license": "MIT",
   "repository": "niiknow/text-file-diff",
@@ -10,7 +10,7 @@
     "url": "niiknow.org"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=6"
   },
   "scripts": {
     "test": "xo && nyc ava",

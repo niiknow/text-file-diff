@@ -48,6 +48,11 @@ m.on('+', line => {
 m.diff('tests/file1.txt', 'tests/file2.txt');
 ```
 
+**TextFileDiff** constructor also accept optional options object.  Valid options are:
+1. `skipHeader` - boolean indicating if first line should be skipped
+2. `charset` - default to `utf8`
+3. `compareFn` - line comparer function that take in two line (line1 and line2), and `return line1 > line2 ? 1 : (line1 < line2 ? -1 : 0)` allowing you to define how you want to perform line compare.
+
 ## Example
 ```bash
 $ ./bin/text-file-diff tests/file1.txt tests/file2.txt

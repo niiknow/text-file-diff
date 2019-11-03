@@ -8,8 +8,8 @@ const ReadlinesSync = require('n-readlines');
  * @return Number       0 for equals, 1 if line1 > line2 or -1
  */
 function defaultLineComparer(line1, line2) {
-  line1 = String(line1).trim();
-  line2 = String(line2).trim();
+  line1 = String(line1);
+  line2 = String(line2);
   return line1 > line2 ? 1 : (line1 < line2 ? -1 : 0);
 }
 
@@ -47,7 +47,7 @@ class TextFileDiff extends EventEmitter {
    * @param  Object options the options option
    * @return Object         self
    */
-  constructor(options) {
+  constructor(options={}) {
     super();
     Object.assign(this, options);
     return this;

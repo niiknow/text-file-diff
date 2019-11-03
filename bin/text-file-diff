@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const LargeFileDiff = require('../index.js');
+const TextFileDiff = require('../index.js');
 
 const argv = process.argv;
 
@@ -12,7 +12,7 @@ if (argv.length < 4) {
 const file1 = argv[2];
 const file2 = argv[3];
 
-const lfd = new LargeFileDiff({
+const lfd = new TextFileDiff({
   skipHeader: argv.skipHeader
 });
 
