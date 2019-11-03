@@ -70,11 +70,11 @@ class TextFileDiff extends EventEmitter {
       lineReader2.moveNext();
     }
 
-    // while both files has valid val
-    while (lineReader1.val || lineReader2.val) {
+    // while both files has valid val, check for actual false value
+    while (lineReader1.val !== false || lineReader2.val !== false) {
       // forEach line in File1, compare to line in File2
-      const line1 = lineReader1.val.toString(charset);
-      const line2 = lineReader2.val.toString(charset);
+      const line1 = lineReader1.val === false ? null : lineReader1.val.toString(charset);
+      const line2 = lineReader2.val === false ? null : lineReader2.val.toString(charset);
       const cmp = compareFn(line1, line2);
 
       // emit on compared
