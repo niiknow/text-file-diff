@@ -47,7 +47,7 @@ class TextFileDiff extends EventEmitter {
    * @param  Object options the options option
    * @return Object         self
    */
-  constructor(options={}) {
+  constructor(options = {}) {
     super();
     Object.assign(this, options);
     return this;
