@@ -34,3 +34,26 @@ test('test skip header', async t => {
   await m.diff('tests/file1.txt', 'tests/file2.txt');
   t.is(actual, expected);
 });
+
+test('test against null or empty file', async t => {
+  let expected = '-some,csv,data\n';
+
+  const m = new TextFileDiff({
+    skipHeader: false
+  });
+  let actual = '';
+  m.on('-', line => {
+    actual += '-' + line + '\n';
+  });
+
+  m.on('+', line => {
+    actual += '+' + line + '\n';
+  });
+  await m.diff('tests/lowercase.txt', 'tests/empty.txt');
+  t.is(actual, expected, 'faile test empty');
+
+  actual = '';
+  expected = '+null\n-some,csv,data\n';
+  await m.diff('tests/lowercase.txt', 'tests/null.txt');
+  t.is(actual, expected, 'fail test null');
+});
