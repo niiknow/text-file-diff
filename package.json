@@ -31,24 +31,25 @@
     "compare-files"
   ],
   "dependencies": {
-    "@types/n-readlines": "^1.0.1"
+    "@types/n-readlines": "^1.0.1",
+    "n-readlines": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "^14.14.21",
-    "ava": "^2.4.0",
+    "ava": "^3.15.0",
     "cross-env": "^7.0.3",
     "debug": "^4.3.1",
-    "n-readlines": "^1.0.1",
-    "nyc": "^14.1.1",
+    "nyc": "^15.1.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3",
-    "xo": "^0.25.3"
+    "xo": "^0.37.1"
   },
   "xo": {
     "semicolon": true,
     "prefer-const": false,
     "space": 2,
     "rules": {
+      "@typescript-eslint/no-inferrable-types": "off",
       "object-shorthand": [
         0,
         "consistent"

@@ -5,7 +5,7 @@ import { PathLike } from 'fs';
 import LineByLine = require('n-readlines');
 export declare class MyLineReader extends LineByLine {
     val: string;
-    nextVal: string;
+    nextValue: string;
     lineNumber: number;
     myFile: string | undefined;
     charset: any;

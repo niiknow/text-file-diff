@@ -1,5 +1,5 @@
-import test from 'ava';
-import TextFileDiff from '../dist';
+const test = require('ava');
+const TextFileDiff = require('../dist/index.js').default;
 
 test('test with header', t => {
   const m = new TextFileDiff();
