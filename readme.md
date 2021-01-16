@@ -21,6 +21,8 @@ ForEach line in File1, compare to line in File2
 
 Since the list will be `sorted`, the performance of this script is expected to be approximately `O(|A| log |A| + |B| log |B|)`, where A is File1 and B is File2.
 
+This library also has no dependency.
+
 ## Install
 
 ```bash
