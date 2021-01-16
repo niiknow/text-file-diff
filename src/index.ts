@@ -2,6 +2,7 @@ import {EventEmitter} from 'events';
 import {TextFileDiffOption} from './types';
 import {PathLike, createReadStream} from 'fs';
 import {Interface, createInterface} from 'readline';
+import stream from 'stream';
 
 import myDebug = require('debug');
 
@@ -14,7 +15,7 @@ export class StreamLineReader {
   charset: any = 'utf8';
   it?: AsyncIterableIterator<string>;
   eof: number = -1;
-  async init(readStream: NodeJS.ReadableStream): Promise<StreamLineReader> {
+  async init(readStream: stream.Readable): Promise<StreamLineReader> {
     const rl = createInterface({
       input: readStream,
       crlfDelay: Number.POSITIVE_INFINITY
@@ -70,11 +71,11 @@ export default class TextFileDiff extends EventEmitter {
 
   /**
    * run diffStream
-   * @param  NodeJS.ReadableStream stream1
-   * @param  NodeJS.ReadableStream stream2
+   * @param  Readable stream1
+   * @param  Readable stream2
    * @return Object         self
    */
-  async diffStream(stream1: NodeJS.ReadableStream, stream2: NodeJS.ReadableStream) {
+  async diffStream(stream1: stream.Readable, stream2: stream.Readable) {
     const lineReader1 = await (new StreamLineReader()).init(stream1);
     const lineReader2 = await (new StreamLineReader()).init(stream2);
     const {compareFn, charset} = this.options;

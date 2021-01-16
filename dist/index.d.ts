@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import { TextFileDiffOption } from './types';
+import stream from 'stream';
 export declare class StreamLineReader {
     value: string;
     nextValue: string;
@@ -8,7 +9,7 @@ export declare class StreamLineReader {
     charset: any;
     it?: AsyncIterableIterator<string>;
     eof: number;
-    init(readStream: NodeJS.ReadableStream): Promise<StreamLineReader>;
+    init(readStream: stream.Readable): Promise<StreamLineReader>;
     moveNext(): Promise<string>;
 }
 /**
@@ -26,10 +27,10 @@ export default class TextFileDiff extends EventEmitter {
     diff(file1: string, file2: string): Promise<this>;
     /**
      * run diffStream
-     * @param  NodeJS.ReadableStream stream1
-     * @param  NodeJS.ReadableStream stream2
+     * @param  Readable stream1
+     * @param  Readable stream2
      * @return Object         self
      */
-    diffStream(stream1: NodeJS.ReadableStream, stream2: NodeJS.ReadableStream): Promise<this>;
+    diffStream(stream1: stream.Readable, stream2: stream.Readable): Promise<this>;
     doCompareLineReader(lineReader1: StreamLineReader, lineReader2: StreamLineReader): Promise<void>;
 }
