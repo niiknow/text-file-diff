@@ -1,6 +1,5 @@
 .travis.yml
 tests/*
-src/*
 node_modules
 yarn.lock
 .nyc_output
