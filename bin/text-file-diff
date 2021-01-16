@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const TextFileDiff = require('../index.js');
+const TextFileDiff = require('../dist/index.js').default;
 
 const argv = process.argv;
 
@@ -23,4 +23,5 @@ lfd.on('+', line => {
 lfd.on('-', line => {
   console.log('-|' + line);
 });
+
 lfd.diff(file1, file2);

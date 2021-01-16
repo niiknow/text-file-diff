@@ -1,7 +1,7 @@
 const test = require('ava');
 const TextFileDiff = require('../dist/index.js').default;
 
-test('test with header', t => {
+test('test with header', async t => {
   const m = new TextFileDiff();
   const expected = '+Additional\n+Another\n+Lines\n-Some\n-Simple\n+With\n';
 
@@ -13,11 +13,11 @@ test('test with header', t => {
   m.on('+', line => {
     actual += '+' + line + '\n';
   });
-  m.diff('tests/file1.txt', 'tests/file2.txt');
+  await m.diff('tests/file1.txt', 'tests/file2.txt');
   t.is(actual, expected);
 });
 
-test('test skip header', t => {
+test('test skip header', async t => {
   const expected = '+Another\n+File\n+Lines\n-Some\n-Simple\n+With\n';
 
   const m = new TextFileDiff({
@@ -31,6 +31,6 @@ test('test skip header', t => {
   m.on('+', line => {
     actual += '+' + line + '\n';
   });
-  m.diff('tests/file1.txt', 'tests/file2.txt');
+  await m.diff('tests/file1.txt', 'tests/file2.txt');
   t.is(actual, expected);
 });

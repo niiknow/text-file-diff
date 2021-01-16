@@ -1,40 +1,46 @@
 import {EventEmitter} from 'events';
 import {TextFileDiffOption} from './types';
-import {PathLike} from 'fs';
+import {PathLike, createReadStream} from 'fs';
+import {Interface, createInterface} from 'readline';
 
-import LineByLine = require('n-readlines');
 import myDebug = require('debug');
 
 const debug = myDebug('text-file-diff');
 
-export class MyLineReader extends LineByLine {
-  val: string = '';
+export class StreamLineReader {
+  value: string = '';
   nextValue: string = '';
   lineNumber: number = -1;
-  myFile: string | undefined = undefined;
   charset: any = 'utf8';
+  it?: AsyncIterableIterator<string>;
   eof: number = -1;
-  constructor(file: PathLike | number) {
-    super(file, null);
+  async init(readStream: NodeJS.ReadableStream): Promise<StreamLineReader> {
+    const rl = createInterface({
+      input: readStream,
+      crlfDelay: Number.POSITIVE_INFINITY
+    });
+    this.it = rl[Symbol.asyncIterator]();
 
     // move to first line
-    this.moveNext();
-    this.moveNext();
+    await this.moveNext();
+    await this.moveNext();
+
+    return this;
   }
 
-  moveNext(): string {
-    this.val = this.nextValue;
+  async moveNext(): Promise<string> {
+    this.value = this.nextValue;
 
-    let nextValue: any = this.next();
+    const nextResult = await this.it.next();
 
-    if (nextValue === false) {
+    if (nextResult.done) {
       this.eof++;
-      nextValue = '';
+      nextResult.value = '';
     }
 
-    this.nextValue = nextValue.toString(this.charset);
+    this.nextValue = nextResult.value;
     this.lineNumber++;
-    return this.val;
+    return this.value;
   }
 }
 
@@ -56,42 +62,56 @@ export default class TextFileDiff extends EventEmitter {
    * @param  String file2 path to file 2
    * @return Object         self
    */
-  diff(file1: string, file2: string) {
-    const lineReader1 = new MyLineReader(file1);
-    const lineReader2 = new MyLineReader(file2);
+  async diff(file1: string, file2: string) {
+    const stream1 = createReadStream(file1);
+    const stream2 = createReadStream(file2);
+    return this.diffStream(stream1, stream2);
+  }
+
+  /**
+   * run diffStream
+   * @param  NodeJS.ReadableStream stream1
+   * @param  NodeJS.ReadableStream stream2
+   * @return Object         self
+   */
+  async diffStream(stream1: NodeJS.ReadableStream, stream2: NodeJS.ReadableStream) {
+    const lineReader1 = await (new StreamLineReader()).init(stream1);
+    const lineReader2 = await (new StreamLineReader()).init(stream2);
     const {compareFn, charset} = this.options;
 
     lineReader1.charset = charset;
     lineReader2.charset = charset;
 
     if (this.options.skipHeader) {
-      lineReader1.moveNext();
-      lineReader2.moveNext();
+      await lineReader1.moveNext();
+      await lineReader2.moveNext();
     }
 
+    /* eslint-disable no-await-in-loop */
     // while both files has valid val, check for actual false value
     while (lineReader1.eof < 2 && lineReader2.eof < 2) {
-      this.doCompareLineReader(lineReader1, lineReader2);
+      await this.doCompareLineReader(lineReader1, lineReader2);
     }
+    /* eslint-enable no-await-in-loop */
 
     return this;
   }
 
-  doCompareLineReader(lineReader1: MyLineReader, lineReader2: MyLineReader) {
+  async doCompareLineReader(lineReader1: StreamLineReader, lineReader2: StreamLineReader) {
     // forEach line in File1, compare to line in File2
-    const line1 = lineReader1.val;
-    const line2 = lineReader2.val;
+    const line1 = lineReader1.value;
+    const line2 = lineReader2.value;
     const cmp = this.options.compareFn(line1, line2);
 
-    // debug(lineReader1.val, lineReader2.val, cmp);
+    // debug(line1, line1, cmp);
     // debug(lineReader1.nextValue, lineReader2.nextValue, 'next', lineReader1.eof, lineReader2.eof);
     // emit on compared
     this.emit('compared', line1, line2, cmp, lineReader1, lineReader2);
 
     // equals: incr both files to next line
     if (cmp === 0) {
-      lineReader1.moveNext();
-      lineReader2.moveNext();
+      await lineReader1.moveNext();
+      await lineReader2.moveNext();
     } else if (cmp > 0) {
       // line1 > line2: new line detected
       if (cmp === 1) {
@@ -105,7 +125,7 @@ export default class TextFileDiff extends EventEmitter {
       }
 
       // incr File2 to next line
-      lineReader2.moveNext();
+      await lineReader2.moveNext();
     } else if (cmp < 0) {
       // line1 < line2: deleted line
       if (cmp === -1) {
@@ -119,7 +139,7 @@ export default class TextFileDiff extends EventEmitter {
       }
 
       // incr File1 to next line
-      lineReader1.moveNext();
+      await lineReader1.moveNext();
     }
   }
 }
