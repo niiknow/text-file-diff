@@ -48,6 +48,8 @@ m.on('+', line => {
 
 // run the diff
 m.diff('tests/file1.txt', 'tests/file2.txt');
+
+// or run m.diffStream(stream1, stream2)
 ```
 
 **TextFileDiff** constructor also accept optional options object.  Valid options are:
