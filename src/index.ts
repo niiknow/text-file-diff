@@ -12,7 +12,6 @@ export class StreamLineReader {
   value: string = '';
   nextValue: string = '';
   lineNumber: number = -1;
-  charset: any = 'utf8';
   it?: AsyncIterableIterator<string>;
   eof: number = -1;
   async init(readStream: stream.Readable): Promise<StreamLineReader> {
@@ -78,10 +77,7 @@ export default class TextFileDiff extends EventEmitter {
   async diffStream(stream1: stream.Readable, stream2: stream.Readable) {
     const lineReader1 = await (new StreamLineReader()).init(stream1);
     const lineReader2 = await (new StreamLineReader()).init(stream2);
-    const {compareFn, charset} = this.options;
-
-    lineReader1.charset = charset;
-    lineReader2.charset = charset;
+    const {compareFn} = this.options;
 
     if (this.options.skipHeader) {
       await lineReader1.moveNext();
