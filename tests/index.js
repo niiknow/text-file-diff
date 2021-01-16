@@ -1,5 +1,5 @@
 import test from 'ava';
-import TextFileDiff from '.';
+import TextFileDiff from '../dist';
 
 test('test with header', t => {
   const m = new TextFileDiff();
