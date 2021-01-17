@@ -4,9 +4,8 @@ import {PathLike, createReadStream} from 'fs';
 import {Interface, createInterface} from 'readline';
 import stream from 'stream';
 
-import myDebug = require('debug');
-
-const debug = myDebug('text-file-diff');
+// import myDebug = require('debug');
+// const debug = myDebug('text-file-diff');
 
 export class StreamLineReader {
   value: string = '';
