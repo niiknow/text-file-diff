@@ -103,11 +103,7 @@ export default class TextFileDiff extends EventEmitter {
     // emit on compared
     this.emit('compared', line1, line2, cmpar, lineReader1, lineReader2);
 
-    // equals: incr both files to next line
-    if (cmpar === 0) {
-      await lineReader1.moveNext();
-      await lineReader2.moveNext();
-    } else if (cmpar > 0) {
+    if (cmpar > 0) {
       // line1 > line2: new line detected
       // if file2 ended before file1, then file2 lost line1
       // else file2 has new line
@@ -119,7 +115,7 @@ export default class TextFileDiff extends EventEmitter {
 
       // incr File2 to next line
       await lineReader2.moveNext();
-    } else {
+    } else if (cmpar < 0) {
       // line1 < line2: deleted line
       // if file1 ended before file2, then file2 has new line
       // else file1 lost a line
@@ -131,6 +127,10 @@ export default class TextFileDiff extends EventEmitter {
 
       // incr File1 to next line
       await lineReader1.moveNext();
+    } else {
+      // equals: 0 incr both files to next line
+      await lineReader1.moveNext();
+      await lineReader2.moveNext();
     }
   }
 }
