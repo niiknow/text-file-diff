@@ -77,7 +77,6 @@ export default class TextFileDiff extends EventEmitter {
   async diffStream(stream1: stream.Readable, stream2: stream.Readable) {
     const lineReader1 = await (new StreamLineReader()).init(stream1);
     const lineReader2 = await (new StreamLineReader()).init(stream2);
-    const {compareFn} = this.options;
 
     if (this.options.skipHeader) {
       await lineReader1.moveNext();
@@ -85,7 +84,7 @@ export default class TextFileDiff extends EventEmitter {
     }
 
     /* eslint-disable no-await-in-loop */
-    // while both files has valid val, check for actual false value
+    // while both files has valid val, check eof counter
     while (lineReader1.eof < 2 && lineReader2.eof < 2) {
       await this.doCompareLineReader(lineReader1, lineReader2);
     }
@@ -98,41 +97,37 @@ export default class TextFileDiff extends EventEmitter {
     // forEach line in File1, compare to line in File2
     const line1 = lineReader1.value;
     const line2 = lineReader2.value;
-    const cmp = this.options.compareFn(line1, line2);
+    const cmpar = this.options.compareFn(line1, line2);
 
-    // debug(line1, line1, cmp);
+    // debug(line1, line1, cmpar);
     // debug(lineReader1.nextValue, lineReader2.nextValue, 'next', lineReader1.eof, lineReader2.eof);
     // emit on compared
-    this.emit('compared', line1, line2, cmp, lineReader1, lineReader2);
+    this.emit('compared', line1, line2, cmpar, lineReader1, lineReader2);
 
     // equals: incr both files to next line
-    if (cmp === 0) {
+    if (cmpar === 0) {
       await lineReader1.moveNext();
       await lineReader2.moveNext();
-    } else if (cmp > 0) {
+    } else if (cmpar > 0) {
       // line1 > line2: new line detected
-      if (cmp === 1) {
-        // if file2 ended before file1, then file2 lost line1
-        // else file2 has new line
-        if (lineReader2.eof > lineReader1.eof) {
-          this.emit('-', line1, lineReader1, lineReader2);
-        } else {
-          this.emit('+', line2, lineReader1, lineReader2);
-        }
+      // if file2 ended before file1, then file2 lost line1
+      // else file2 has new line
+      if (lineReader2.eof > lineReader1.eof) {
+        this.emit('-', line1, lineReader1, lineReader2);
+      } else {
+        this.emit('+', line2, lineReader1, lineReader2);
       }
 
       // incr File2 to next line
       await lineReader2.moveNext();
-    } else if (cmp < 0) {
+    } else {
       // line1 < line2: deleted line
-      if (cmp === -1) {
-        // if file1 ended before file2, then file2 has new line
-        // else file1 lost a line
-        if (lineReader1.eof > lineReader2.eof) {
-          this.emit('+', line2, lineReader1, lineReader2);
-        } else {
-          this.emit('-', line1, lineReader1, lineReader2);
-        }
+      // if file1 ended before file2, then file2 has new line
+      // else file1 lost a line
+      if (lineReader1.eof > lineReader2.eof) {
+        this.emit('+', line2, lineReader1, lineReader2);
+      } else {
+        this.emit('-', line1, lineReader1, lineReader2);
       }
 
       // incr File1 to next line
