@@ -6,7 +6,6 @@ export declare class StreamLineReader {
     value: string;
     nextValue: string;
     lineNumber: number;
-    charset: any;
     it?: AsyncIterableIterator<string>;
     eof: number;
     init(readStream: stream.Readable): Promise<StreamLineReader>;
