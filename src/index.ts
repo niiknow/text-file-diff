@@ -1,7 +1,7 @@
-import {EventEmitter} from 'events';
+import {EventEmitter2} from 'eventemitter2';
 import {TextFileDiffOption} from './types';
-import {PathLike, createReadStream} from 'fs';
-import {Interface, createInterface} from 'readline';
+import {createReadStream} from 'fs';
+import {createInterface} from 'readline';
 import stream from 'stream';
 
 // import myDebug = require('debug');
@@ -46,7 +46,7 @@ export class StreamLineReader {
 /**
  * line by line diff of two files
  */
-export default class TextFileDiff extends EventEmitter {
+export default class TextFileDiff extends EventEmitter2 {
   options: TextFileDiffOption;
 
   constructor(options?: TextFileDiffOption) {
@@ -101,17 +101,18 @@ export default class TextFileDiff extends EventEmitter {
     // debug(line1, line1, cmpar);
     // debug(lineReader1.nextValue, lineReader2.nextValue, 'next', lineReader1.eof, lineReader2.eof);
     // emit on compared
-    this.emit('compared', line1, line2, cmpar, lineReader1, lineReader2);
+    await this.emitAsync('compared', line1, line2, cmpar, lineReader1, lineReader2);
 
     if (cmpar > 0) {
       // line1 > line2: new line detected
       // if file2 ended before file1, then file2 lost line1
       // else file2 has new line
-      if (lineReader2.eof > lineReader1.eof) {
-        this.emit('-', line1, lineReader1, lineReader2);
-      } else {
-        this.emit('+', line2, lineReader1, lineReader2);
-      }
+
+      /* eslint-disable @typescript-eslint/no-unused-expressions */
+      lineReader2.eof > lineReader1.eof ?
+        await this.emitAsync('-', line1, lineReader1, lineReader2) :
+        await this.emitAsync('+', line2, lineReader1, lineReader2);
+      /* eslint-enable @typescript-eslint/no-unused-expressions */
 
       // incr File2 to next line
       await lineReader2.moveNext();
@@ -119,11 +120,12 @@ export default class TextFileDiff extends EventEmitter {
       // line1 < line2: deleted line
       // if file1 ended before file2, then file2 has new line
       // else file1 lost a line
-      if (lineReader1.eof > lineReader2.eof) {
-        this.emit('+', line2, lineReader1, lineReader2);
-      } else {
-        this.emit('-', line1, lineReader1, lineReader2);
-      }
+
+      /* eslint-disable @typescript-eslint/no-unused-expressions */
+      lineReader1.eof > lineReader2.eof ?
+        await this.emitAsync('+', line2, lineReader1, lineReader2) :
+        await this.emitAsync('-', line1, lineReader1, lineReader2);
+      /* eslint-enable @typescript-eslint/no-unused-expressions */
 
       // incr File1 to next line
       await lineReader1.moveNext();

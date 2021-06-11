@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { EventEmitter } from 'events';
+import { EventEmitter2 } from 'eventemitter2';
 import { TextFileDiffOption } from './types';
 import stream from 'stream';
 export declare class StreamLineReader {
@@ -14,7 +14,7 @@ export declare class StreamLineReader {
 /**
  * line by line diff of two files
  */
-export default class TextFileDiff extends EventEmitter {
+export default class TextFileDiff extends EventEmitter2 {
     options: TextFileDiffOption;
     constructor(options?: TextFileDiffOption);
     /**
