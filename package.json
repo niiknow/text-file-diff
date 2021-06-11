@@ -14,7 +14,7 @@
     "npm": ">=6"
   },
   "scripts": {
-    "build": "tsc",
+    "prepare": "mkdir -p dist/ && tsc",
     "test": "tsc && cross-env DEBUG=text-file-diff xo && cross-env DEBUG=text-file-diff nyc ava",
     "report": "tsc && cross-env DEBUG=text-file-diff nyc report --reporter=html"
   },
@@ -57,5 +57,8 @@
   },
   "ava": {
     "failWithoutAssertions": true
+  },
+  "dependencies": {
+    "eventemitter2": "^6.4.4"
   }
 }

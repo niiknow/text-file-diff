@@ -35,6 +35,29 @@ test('test skip header', async t => {
   t.is(actual, expected);
 });
 
+test('test await listener', async t => {
+  const m = new TextFileDiff();
+  const expected = 'compared+compared+comparedcompared+compared-compared-comparedcompared+';
+
+  let actual = '';
+
+  const getListenerFor = event => async () => new Promise(resolve => {
+    setTimeout(() => {
+      actual += event;
+      resolve();
+    }, 200);
+  });
+
+  m.on('-', getListenerFor('-'));
+  m.on('+', getListenerFor('+'));
+
+  m.on('compared', getListenerFor('compared'));
+
+  await m.diff('tests/file1.txt', 'tests/file2.txt');
+
+  t.is(actual, expected);
+});
+
 test('test against null or empty file', async t => {
   let expected = '-some,csv,data\n';
 
