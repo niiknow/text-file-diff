@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import { EventEmitter } from 'events';
 import { TextFileDiffOption } from './types';
 import stream from 'stream';
